@@ -17,6 +17,7 @@ The output of the sub-expert is fed into a switch transformer decoder, which uti
 Objective: Multi Object Classification and Multi Object Bounding Box Regression
 Data:
 1) detection-datasets/coco
+
 We utilise a DETR processor to preprocess the input images, and then feed these processed tensors into the RESNET for creating feature maps.
 
 We route sequences of feature maps to sub experts:
@@ -28,8 +29,39 @@ The output of the sub-expert gets fed into a Switch Transformer with LORY MoE La
 
 # MultiModal 1B
 // TODO: MULTI MODAL COMING SOON
+Papers this will be based on:
+1) https://arxiv.org/pdf/2405.09818
+Utilise a Transformer Architecture, "deviate from the Llama architecture by using query-key normalization (QK-Norm). QK-Norm directly controls the norm growth of input to the softmax by applying layer norm to the query and key vectors within the attention." (Chameleon Team, 2024).
+
+h = x + attention_norm(attention(x))
+output = h + ffn_norm(feed_forward(h))
+
+we apply z-loss regularization. Specifically, we regularize the partition function Z of the Softmax Function.
+
+The data is split into Text, Code, Visual Chat, Image Gen, Interleaved Text/Image Gen, Safety.
+
+Image Size 512x512
+
+Need to utilise data balancing across modalities for high quality alignment.
+
+2) https://arxiv.org/pdf/2405.17247
+
+
+3) https://arxiv.org/pdf/2403.09611
+MM1:
+– Image Encoder: A ViT-L/14 [27] model trained with a CLIP loss [91] on
+DFN-5B [31] and VeCap-300M [57]; images of size 336×336.
+– Vision-Language Connector: C-Abstractor [12] with 144 image tokens.
+– Pre-training Data: A mix of captioned images (45%), interleaved imagetext documents (45%), and text-only (10%) data.
+– Language Model: A 1.2B transformer decoder-only language model.
+To evaluate the different design decisions, we use zero-shot and few-shot (4-
+and 8-shot) performance on a variety of captioning and VQA tasks: COCO Captioning [18], NoCaps [2], TextCaps [103], VQAv2 [38], TextVQA [104], VizWiz [39],
+GQA [46], and OK-VQA [82].
 
 # Agent 1B
+papers:
+1) https://arxiv.org/pdf/2205.06175
+
 An Agent performs a certain task in a certain environment. Any of the Models can be used as an Agent Backbone. The Agent has sub-agents that are activated depending on the given task:
 1) Deep Actor Critic
 2) Deep Q Agent
