@@ -3,7 +3,9 @@ Lightbulb Partners Models
 
 # Language 1B
 Objective: Next Token Prediction
+
 Data: FineWeb_Edu: HuggingFaceFW/fineweb-edu
+
 This small language model utilises a custom 'Expert' Method. The Language Expert utilises Sparse Flash2 Attention for processing the inputs, and feeds the attention distribution to the Switch Router. the Switch Router routes the sequence to a sub-expert:
 
 Sub-Experts:
