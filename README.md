@@ -3,7 +3,7 @@ Lightbulb Partners Models
 
 # Language 1B
 Objective: Next Token Prediction
-Data: wikipedia
+Data: FineWeb_Edu: HuggingFaceFW/fineweb-edu
 This small language model utilises a custom 'Expert' Method. The Language Expert utilises Sparse Flash2 Attention for processing the inputs, and feeds the attention distribution to the Switch Router. the Switch Router routes the sequence to a sub-expert:
 
 Sub-Experts:
@@ -16,7 +16,7 @@ The output of the sub-expert is fed into a switch transformer decoder, which uti
 # Vision 1B
 Objective: Multi Object Classification and Multi Object Bounding Box Regression
 Data:
-1) detection-datasets/coco
+1) COCO: detection-datasets/coco
 
 We utilise a DETR processor to preprocess the input images, and then feed these processed tensors into the RESNET for creating feature maps.
 
