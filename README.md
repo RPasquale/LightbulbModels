@@ -5,42 +5,47 @@ Lightbulb Partners Models
 Objective: Next Token Prediction
 
 Data: FineWeb_Edu: HuggingFaceFW/fineweb-edu
+Models:
+1) GPT2: just an implementation of Karpathy's GPT2 from: https://youtu.be/l8pRSuU81PU?si=KvSqpJhMT5FCMY5e
 
+2) multi_model:
 This small language model utilises a custom 'Expert' Method. The Language Expert utilises Sparse Flash2 Attention for processing the inputs, and feeds the attention distribution to the Switch Router. the Switch Router routes the sequence to a sub-expert:
 
 Sub-Experts:
-1) TransformerRAG: Influences the attention matrix with context embeddings retrieved through Dense Passage Retrieval.
-2) TransformerDPO: Transformer Fine tuned using Direct Preference Optimisation // TODO: thinking of just making this a regular Transformer Model and runnign DPO on the whole Expert.
-3) Mamba: As they say, if we can get the same or better result with linear complexity rather than quadratic, lets do it! Mamba is the selective state space model.
+1) TransformerRAG: Influences the attention matrix with context embeddings retrieved through Dense Passage Retrieval. (https://arxiv.org/pdf/2312.10997)
+2) TransformerDPO: Transformer Fine tuned using Direct Preference Optimisation. (https://arxiv.org/pdf/2305.18290) // TODO: thinking of just making this a regular Transformer Model and runnign DPO on the whole Expert.
+3) Mamba: As they say, if we can get the same or better result with linear complexity rather than quadratic, lets do it! Mamba is the selective state space model. (https://arxiv.org/pdf/2312.00752)
 
 The output of the sub-expert is fed into a switch transformer decoder, which utilises Beam Search or TopK Sampling for improving the decoded output.
 
 # Vision 1B
 Objective: Multi Object Classification and Multi Object Bounding Box Regression
 Data:
-1) COCO: detection-datasets/coco
+COCO: detection-datasets/coco
+1) simple vision model:
+Use a resnet for feature extraction, use those features and the input features to train a ViT for multi object classification and multi object bounding box detection.
 
+2) multi_vision_model
 We utilise a DETR processor to preprocess the input images, and then feed these processed tensors into the RESNET for creating feature maps.
 
 We route sequences of feature maps to sub experts:
-1) Detection Transformer:Global understanding of Local Features from the resnet backbone used in the detection transformer.
-2) Vision Transformer: The ViT is there to capture global relationships from the images.
-3) Vision Mamba: Linear complexity
+1) Detection Transformer:Global understanding of Local Features from the resnet backbone used in the detection transformer. (https://arxiv.org/pdf/2005.12872)
+2) Vision Transformer: The ViT is there to capture global relationships from the images. (https://arxiv.org/pdf/2010.11929)
+3) Vision Mamba: Linear complexity (https://arxiv.org/pdf/2401.09417)
 
 The output of the sub-expert gets fed into a Switch Transformer with LORY MoE Layers, and BEam Search or TopK Sampling Decoding of final object detections and bounding box regressions.
 
 # MultiModal 1B
-// TODO: MULTI MODAL COMING SOON
 Papers this will be based on:
 1) https://arxiv.org/pdf/2405.09818
 Utilise a Transformer Architecture, "deviate from the Llama architecture by using query-key normalization (QK-Norm). QK-Norm directly controls the norm growth of input to the softmax by applying layer norm to the query and key vectors within the attention." (Chameleon Team, 2024).
 
-h = x + attention_norm(attention(x))
+"h = x + attention_norm(attention(x))
 output = h + ffn_norm(feed_forward(h))
 
 we apply z-loss regularization. Specifically, we regularize the partition function Z of the Softmax Function.
 
-The data is split into Text, Code, Visual Chat, Image Gen, Interleaved Text/Image Gen, Safety.
+The data is split into Text, Code, Visual Chat, Image Gen, Interleaved Text/Image Gen, Safety." (Chameleon)
 
 Image Size 512x512
 
@@ -62,14 +67,10 @@ GQA [46], and OK-VQA [82].
 
 # Agent 1B
 papers:
-1) https://arxiv.org/pdf/2205.06175
-
-An Agent performs a certain task in a certain environment. Any of the Models can be used as an Agent Backbone. The Agent has sub-agents that are activated depending on the given task:
-1) Deep Actor Critic
-2) Deep Q Agent
-
-Tasks could range from 'News Summariser' to 'Sentiment Analysis', or anything. Each of these tasks requires its own environment and own separate objective. The Agent, and sub agent architecture , whilst using the Model backbone, operates in a task specific environment with a unique objective. the Agent trains parameters to learn about achieving this new objective in the new environment. 
-
+1) GATO Agent: https://arxiv.org/pdf/2205.06175
+2) World Models: https://arxiv.org/pdf/1803.10122
+3) Reward free cirricula: https://arxiv.org/pdf/2306.09205v2
+The idea here is to use the chameleon multi-modal model as the GATO agent backbone, and train a world model (2) that the gato agent (1) can interact with and engage in a 2 player zero sum minimax game with. The World Model is trying to maximise the regret while the agent is trying to minimize regret (3). Using this architecture, we can model the latent space, which can be useful for robustness of our agents.
 # MultiAgent 1B
 
 Multiple Agents create a Multi-Agent System (MAS). A shared network is created over all the agents in the system, and the shared network utilises feedback from all the agents in the system to update an overall MAS policy or value function, that the individual agents utilise in their given environments on their tasks. 
