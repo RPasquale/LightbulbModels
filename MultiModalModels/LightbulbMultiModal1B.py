@@ -363,7 +363,7 @@ chameleon_model.to(device)
 #####################################################
 # Set testing flag to True to use fake data to test the model
 # flag = False uses coco
-testing = True
+testing = False
 
 if testing:
     images, bboxes, labels = generate_random_dataset(num_samples=100)
@@ -484,3 +484,5 @@ def plot_attention_weights(attn_weights, layer, head):
     plt.show()
 
 plot_attention_weights(attn_weights_list, layer=0, head=0)
+
+
