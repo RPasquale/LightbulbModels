@@ -1,3 +1,78 @@
+How to use LightbulbModels:
+
+1. git clone: https://github.com/RPasquale/LightbulbModels.git
+# TODO: make relative paths for saving shards and loading shards
+2. cd LightbulbModels
+
+# Save the Tokens
+3. cd DataScripts
+
+4. cd LanguageData
+
+5. python fineweb_edu_data.py
+
+6. python wiki_text.py
+
+7. cd RewardData
+
+8. python dpo_math.py
+
+9. python nathukr.py
+
+10. python orca_dpopairs.py
+
+11. cd Instruction
+
+12. python instruct.py
+
+13. cd Code
+
+14. python code_gen.py
+
+# Train Language Model
+15. cd C:\Users\Admin\LightbulbModels\Training
+
+16. python train_language.py
+
+17. python train_language_tasks.py
+
+# Save Vision Tokens
+18. cd C:\Users\Admin\LightbulbModels\DataScripts\VisionData
+
+19. python coco_data.py
+
+20. python img_net.py
+
+21. python ocr.py
+
+22. python vis_genome.py
+
+# Train Vision Model
+cd C:\Users\Admin\LightbulbModels\Training
+
+python train_vision.py
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Descriptions:
+
 # LightbulbModels
 Lightbulb Partners Models
 
