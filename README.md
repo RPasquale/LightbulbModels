@@ -1,82 +1,92 @@
 How to use LightbulbModels:
 
 1. git clone: https://github.com/RPasquale/LightbulbModels.git
-# TODO: make relative paths for saving shards and loading shards
+TODO: make relative paths for saving shards and loading shards
 2. cd LightbulbModels
 
 # Save the Tokens
 3. cd DataScripts
 
+
 4. cd LanguageData
+
 
 5. python fineweb_edu_data.py
 
+
 6. python wiki_text.py
+
 
 7. cd RewardData
 
+
 8. python dpo_math.py
+
 
 9. python nathukr.py
 
+
 10. python orca_dpopairs.py
+
 
 11. cd Instruction
 
+
 12. python instruct.py
+
 
 13. cd Code
 
+
 14. python code_gen.py
 
+
 # Train Language Model
+
 15. cd C:\Users\Admin\LightbulbModels\Training
+
 
 16. python train_language.py
 
+
 17. python train_language_tasks.py
 
+
 # Save Vision Tokens
+
 18. cd C:\Users\Admin\LightbulbModels\DataScripts\VisionData
+
 
 19. python coco_data.py
 
+
 20. python img_net.py
+
 
 21. python ocr.py
 
+
 22. python vis_genome.py
 
+
 # Train Vision Model
+
 cd C:\Users\Admin\LightbulbModels\Training
+
 
 python train_vision.py
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Descriptions:
+========================================================================================================================================================================================================================================================
+### Descriptions:
 
 # LightbulbModels
+
 Lightbulb Partners Models
 
 # Language 1B
+
 Objective: Next Token Prediction
 
 Data: FineWeb_Edu: HuggingFaceFW/fineweb-edu
@@ -94,6 +104,7 @@ Sub-Experts:
 The output of the sub-expert is fed into a switch transformer decoder, which utilises Beam Search or TopK Sampling for improving the decoded output.
 
 # Vision 1B
+
 Objective: Multi Object Classification and Multi Object Bounding Box Regression
 Data:
 COCO: detection-datasets/coco
@@ -111,6 +122,7 @@ We route sequences of feature maps to sub experts:
 The output of the sub-expert gets fed into a Switch Transformer with LORY MoE Layers, and BEam Search or TopK Sampling Decoding of final object detections and bounding box regressions.
 
 # MultiModal 1B
+
 Papers this will be based on:
 1) https://arxiv.org/pdf/2405.09818
 Utilise a Transformer Architecture, "deviate from the Llama architecture by using query-key normalization (QK-Norm). QK-Norm directly controls the norm growth of input to the softmax by applying layer norm to the query and key vectors within the attention." (Chameleon Team, 2024).
@@ -141,11 +153,13 @@ and 8-shot) performance on a variety of captioning and VQA tasks: COCO Captionin
 GQA [46], and OK-VQA [82].
 
 # Agent 1B
+
 papers:
 1) GATO Agent: https://arxiv.org/pdf/2205.06175
 2) World Models: https://arxiv.org/pdf/1803.10122
 3) Reward free cirricula: https://arxiv.org/pdf/2306.09205v2
 The idea here is to use the chameleon multi-modal model as the GATO agent backbone, and train a world model (2) that the gato agent (1) can interact with and engage in a 2 player zero sum minimax game with. The World Model is trying to maximise the regret while the agent is trying to minimize regret (3). Using this architecture, we can model the latent space, which can be useful for robustness of our agents.
+
 # MultiAgent 1B
 
 Multiple Agents create a Multi-Agent System (MAS). A shared network is created over all the agents in the system, and the shared network utilises feedback from all the agents in the system to update an overall MAS policy or value function, that the individual agents utilise in their given environments on their tasks. 
