@@ -1,4 +1,4 @@
-How to use LightbulbModels:
+# How to use LightbulbModels:
 
 1. git clone: https://github.com/RPasquale/LightbulbModels.git
 TODO: make relative paths for saving shards and loading shards
